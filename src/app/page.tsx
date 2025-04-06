@@ -7,42 +7,122 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardContent,
+  CardFooter,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import JoinRequestModal from "@/components/group/joinRequestModal";
+import {
+  PlusCircle,
+  UserPlus,
+  Users,
+  ArrowRight,
+  Calendar,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
 export default function Home() {
-  const { groups } = useGroup();
+  const { groups, joinRequests } = useGroup();
   const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false);
   const router = useRouter();
   const [isJoinRequestModalOpen, setIsJoinRequestModalOpen] = useState(false);
+
+  // Get pending join requests count
+  const pendingRequestsCount = joinRequests.filter(
+    (request) => request.status === "pending"
+  ).length;
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
-        <Button onClick={() => setIsCreateGroupModalOpen(true)}>
+    <div className="container mx-auto py-8 px-4 max-w-7xl">
+      <div className="mb-10 text-center">
+        <h1 className="text-3xl font-bold tracking-tight mb-3">
+          Group Dashboard
+        </h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          Manage your groups and team collaborations in one place. Create new
+          groups or join existing ones.
+        </p>
+      </div>
+
+      <div className="flex justify-center gap-4 mb-10">
+        <Button
+          onClick={() => setIsCreateGroupModalOpen(true)}
+          className="flex items-center gap-2"
+          size="lg"
+        >
+          <PlusCircle size={18} />
           Create Group
         </Button>
-        <Button onClick={() => setIsJoinRequestModalOpen(true)}>
-          Join Request
+        <Button
+          onClick={() => setIsJoinRequestModalOpen(true)}
+          className="flex items-center gap-2"
+          variant="outline"
+          size="lg"
+        >
+          <UserPlus size={18} />
+          Join Request {pendingRequestsCount > 0 && `(${pendingRequestsCount})`}
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {groups.map((group) => (
-          <Card
-            onClick={() => {
-              router.push(`/group/${group._id}`);
-            }}
-            className="cursor-pointer"
-            key={group._id}
-          >
-            <CardHeader>
-              <CardTitle>{group.name}</CardTitle>
-              <CardDescription>{group.description}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+      {groups.length === 0 ? (
+        <div className="bg-muted/50 rounded-lg p-10 text-center">
+          <Users className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-medium mb-2">No groups found</h3>
+          <p className="text-muted-foreground mb-6">
+            You haven't created or joined any groups yet.
+          </p>
+          <Button onClick={() => setIsCreateGroupModalOpen(true)}>
+            Create Your First Group
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {groups.map((group) => (
+            <Card
+              key={group._id}
+              className="transition-all duration-200 hover:shadow-md hover:border-primary/20 cursor-pointer overflow-hidden"
+              onClick={() => router.push(`/group/${group._id}`)}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl">{group.name}</CardTitle>
+                <CardDescription className="line-clamp-2">
+                  {group.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Users size={16} />
+                  <span>{group.participantsCount || 0} Members</span>
+                </div>
+
+                {(group.startDate || group.endDate) && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Calendar size={16} />
+                    <span>
+                      {group.startDate &&
+                        new Date(group.startDate).toLocaleDateString()}
+                      {group.startDate && group.endDate && " - "}
+                      {group.endDate &&
+                        new Date(group.endDate).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+              </CardContent>
+              <CardFooter className="pt-2 flex justify-end">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1"
+                >
+                  View Details <ArrowRight size={14} />
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+
       <CreateGroupModal
         isOpen={isCreateGroupModalOpen}
         setIsOpen={setIsCreateGroupModalOpen}

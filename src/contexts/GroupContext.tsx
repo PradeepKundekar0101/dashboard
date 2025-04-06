@@ -12,6 +12,9 @@ export type Group = {
   endDate?: Date;
   createdAt?: Date;
   updatedAt?: Date;
+  participantsCount?: number;
+  isPublic?: boolean;
+  isRegistrationOpen?: boolean;
 };
 export type JoinRequest = {
   _id?: string;
