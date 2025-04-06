@@ -25,11 +25,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  // Check authentication status on initial load
-  useEffect(() => {
-    verifyAuth();
-  }, []);
-
   const verifyAuth = () => {
     const token = localStorage.getItem("authToken");
 
@@ -42,6 +37,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(false);
   };
+  // Check authentication status on initial load
+  useEffect(() => {
+    verifyAuth();
+  }, [verifyAuth]);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);

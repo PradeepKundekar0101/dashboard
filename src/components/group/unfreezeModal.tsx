@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { forexApi } from "@/hooks/useAxios";
-import { Textarea } from "../ui/textarea";
-import { Label } from "@radix-ui/react-label";
 
 const UnfreezeModal = ({
   accountId,

@@ -9,7 +9,7 @@ import {
 } from "../ui/card";
 import { Table, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
-import { Account, Order } from "@/types";
+import { Account } from "@/types";
 const Orders = ({ account }: { account: Account }) => {
   return (
     <Card>

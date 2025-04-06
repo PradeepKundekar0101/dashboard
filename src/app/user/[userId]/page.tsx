@@ -12,7 +12,7 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, User } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Positions from "@/components/account/positions";
 import { UserData } from "@/types";
 import Deals from "@/components/account/deals";
@@ -31,6 +31,7 @@ const UserPage = () => {
         const response = await forexApi.get(`account/user/${userId}`);
         setUserData(response.data);
         setIsLoading(false);
+        //@ts-ignore
       } catch (err: any) {
         setError(err.message || "Failed to fetch user data");
         setIsLoading(false);

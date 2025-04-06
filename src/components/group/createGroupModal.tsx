@@ -5,7 +5,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -97,6 +96,7 @@ export const CreateGroupModal = ({
         },
       ]);
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error",
         description: "Failed to create group",

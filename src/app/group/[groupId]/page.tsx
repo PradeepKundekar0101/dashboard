@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RefreshCcw, Eye, TrendingUp, Clock, Award, Users } from "lucide-react";
+import { RefreshCcw, TrendingUp, Clock, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -90,7 +90,7 @@ const GroupPage = () => {
     }, 3 * 1000);
 
     return () => clearInterval(refreshInterval);
-  }, [groupId]);
+  }, [groupId, fetchLeaderBoardData]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

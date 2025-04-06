@@ -11,7 +11,7 @@ import {
 } from "../ui/card";
 import { Table, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
-import { Account, Deal } from "@/types";
+import { Account } from "@/types";
 const Deals = ({ account }: { account: Account }) => {
   return (
     <Card>

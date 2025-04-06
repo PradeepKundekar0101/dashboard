@@ -52,7 +52,7 @@ export const GroupProvider = ({ children }: { children: React.ReactNode }) => {
   };
   const fetchJoinRequests = async () => {
     const response = await api.get("/group/getParticipants/participants");
-    console.log(response.data);
+    //@ts-ignore
     const joinRequests = response.data.map((participant: any) => {
       return {
         status: participant.status,
@@ -80,6 +80,7 @@ export const GroupProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await api.post("/groups", group);
       setGroups([...groups, response.data]);
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to create group");
     }
   };
