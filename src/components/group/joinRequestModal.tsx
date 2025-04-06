@@ -8,7 +8,6 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
-import { useGroup } from "@/contexts/GroupContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import moment from "moment";
 import {
@@ -35,16 +34,19 @@ import { api } from "@/hooks/useAxios";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { JoinRequest } from "@/app/page";
 
 const JoinRequestModal = ({
   isOpen,
   setIsOpen,
+  joinRequests,
+  setJoinRequests,
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  joinRequests: JoinRequest[];
+  setJoinRequests: (joinRequests: JoinRequest[]) => void;
 }) => {
-  const { joinRequests, setJoinRequests } = useGroup();
-
   const handleAccept = async (
     participantId: string,
     groupId: string,

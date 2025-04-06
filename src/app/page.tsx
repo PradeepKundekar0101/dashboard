@@ -1,7 +1,6 @@
 "use client";
-import { useGroup } from "@/contexts/GroupContext";
 import { CreateGroupModal } from "@/components/group/createGroupModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardDescription,
@@ -20,13 +19,97 @@ import {
   ArrowRight,
   Calendar,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { api } from "@/hooks/useAxios";
+
+// Define types that were previously in GroupContext
+export type Group = {
+  _id?: string;
+  name: string;
+  description: string;
+  freezeDuration?: number;
+  freezeThreshold?: number;
+  startDate?: Date;
+  endDate?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  participantsCount?: number;
+  isPublic?: boolean;
+  isRegistrationOpen?: boolean;
+};
+
+export type JoinRequest = {
+  _id?: string;
+  groupId: string;
+  groupName: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  status: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export default function Home() {
-  const { groups, joinRequests } = useGroup();
+  // State that was previously in GroupContext
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
   const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false);
   const router = useRouter();
   const [isJoinRequestModalOpen, setIsJoinRequestModalOpen] = useState(false);
+
+  // Fetch groups and join requests directly in the page
+  const fetchGroups = async () => {
+    try {
+      const response = await api.get("/group");
+      setGroups(response.data);
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+    }
+  };
+
+  const fetchJoinRequests = async () => {
+    try {
+      const response = await api.get("/group/getParticipants/participants");
+      const joinRequests = response.data.map((participant: any) => {
+        return {
+          status: participant.status,
+          groupId: participant.groupId._id,
+          groupName: participant.groupId.name,
+          userId: participant.userId._id,
+          firstName: participant.userId.firstName,
+          lastName: participant.userId.lastName,
+          email: participant.userId.email,
+          phone: participant.userId.phoneNumber,
+          createdAt: participant.createdAt,
+          updatedAt: participant.updatedAt,
+          _id: participant._id,
+        };
+      });
+      setJoinRequests(joinRequests);
+    } catch (error) {
+      console.error("Error fetching join requests:", error);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchGroups();
+    fetchJoinRequests();
+  }, []);
+
+  // Create group function
+  const createGroup = async (group: Group) => {
+    try {
+      const response = await api.post("/group", group);
+      setGroups([...groups, response.data]);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create group:", error);
+      throw new Error("Failed to create group");
+    }
+  };
 
   // Get pending join requests count
   const pendingRequestsCount = joinRequests.filter(
@@ -126,10 +209,15 @@ export default function Home() {
       <CreateGroupModal
         isOpen={isCreateGroupModalOpen}
         setIsOpen={setIsCreateGroupModalOpen}
+        createGroup={createGroup}
+        setGroups={setGroups}
+        groups={groups}
       />
       <JoinRequestModal
         isOpen={isJoinRequestModalOpen}
         setIsOpen={setIsJoinRequestModalOpen}
+        joinRequests={joinRequests}
+        setJoinRequests={setJoinRequests}
       />
     </div>
   );

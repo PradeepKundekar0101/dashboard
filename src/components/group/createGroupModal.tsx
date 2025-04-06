@@ -23,16 +23,22 @@ import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
-import { Group, useGroup } from "@/contexts/GroupContext";
 import { toast } from "@/hooks/use-toast";
 import { api } from "@/hooks/useAxios";
+import { Group } from "@/app/page";
 
 export const CreateGroupModal = ({
   isOpen,
   setIsOpen,
+  createGroup,
+  setGroups,
+  groups,
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  createGroup: (group: Group) => Promise<any>;
+  setGroups: (groups: Group[]) => void;
+  groups: Group[];
 }) => {
   const [groupName, setGroupName] = useState<string>("");
   const [groupDescription, setGroupDescription] = useState<string>("");
@@ -43,7 +49,6 @@ export const CreateGroupModal = ({
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
 
-  const { setGroups, groups } = useGroup();
   const handleCreateGroup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(groupName, groupDescription, freezeThreshold, freezeDuration);
@@ -68,8 +73,7 @@ export const CreateGroupModal = ({
         : undefined,
     };
     try {
-      const response = await api.post("/group", group);
-      console.log(response);
+      const response = await createGroup(group);
       setGroupName("");
       setGroupDescription("");
       setFreezeThreshold(0);
