@@ -35,6 +35,7 @@ export type Group = {
   participantsCount?: number;
   isPublic?: boolean;
   isRegistrationOpen?: boolean;
+  initialBalance: number;
 };
 
 export type JoinRequest = {

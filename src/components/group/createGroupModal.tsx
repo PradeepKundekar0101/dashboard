@@ -48,6 +48,7 @@ export const CreateGroupModal = ({
   const [endDate, setEndDate] = useState<Date>();
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
+  const [initialBalance, setInitialBalance] = useState<number>(0);
 
   const handleCreateGroup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +66,7 @@ export const CreateGroupModal = ({
       description: groupDescription,
       freezeThreshold,
       freezeDuration,
+      initialBalance,
       startDate: startDate
         ? new Date(`${format(startDate, "yyyy-MM-dd")}T${startTime}`)
         : undefined,
@@ -82,6 +84,7 @@ export const CreateGroupModal = ({
       setEndDate(undefined);
       setStartTime("");
       setEndTime("");
+      setInitialBalance(0);
       toast({
         title: "Success",
         description: "Group created successfully",
@@ -97,6 +100,7 @@ export const CreateGroupModal = ({
           freezeDuration: response.data.freezeDuration,
           startDate: response.data.startDate,
           endDate: response.data.endDate,
+          initialBalance: response.data.initialBalance,
         },
       ]);
     } catch (error) {
@@ -168,6 +172,16 @@ export const CreateGroupModal = ({
                     <SelectItem value="42000000">7 hours</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="grid gap-2.5">
+                <Label htmlFor="group-description">Initial Balance</Label>
+                <Input
+                  type="number"
+                  id="group-description"
+                  placeholder="Initial Balance"
+                  value={initialBalance}
+                  onChange={(e) => setInitialBalance(Number(e.target.value))}
+                />
               </div>
               <div className="grid gap-2.5 grid-cols-2">
                 <div>
