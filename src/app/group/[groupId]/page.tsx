@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import FreezeModal from "@/components/group/freezeModal";
 import UnfreezeModal from "@/components/group/unfreezeModal";
+import RemoveParticipantModal from "@/components/group/removeParticipantModal";
 
 const GroupPage = () => {
   interface LeaderBoardData {
@@ -52,6 +53,7 @@ const GroupPage = () => {
     userName: string;
     userId: string;
     freezeDetails: FrozenAccount;
+    groupParticipantId: string;
   }
   const { groupId } = useParams();
   const [leaderboard, setLeaderboard] = useState<LeaderBoardData | null>(null);
@@ -62,8 +64,13 @@ const GroupPage = () => {
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
     null
   );
+  const [selectedGroupParticipantId, setSelectedGroupParticipantId] = useState<
+    string | null
+  >(null);
+  const [selectedUserName, setSelectedUserName] = useState<string | null>(null);
   const [showFreezeModal, setShowFreezeModal] = useState<boolean>(false);
   const [showUnfreezeModal, setShowUnfreezeModal] = useState<boolean>(false);
+  const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
   const fetchLeaderBoardData = async () => {
     try {
       if (!leaderboard) {
@@ -171,7 +178,7 @@ const GroupPage = () => {
                       <TableHead className="text-right">Equity</TableHead>
                       <TableHead className="text-center">Trades</TableHead>
                       <TableHead className="text-center">Freezes</TableHead>
-                      <TableHead className="w-24">Actions</TableHead>
+                      <TableHead className="w-36">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -247,6 +254,21 @@ const GroupPage = () => {
                           >
                             {item.freezeDetails.active ? "Unfreeze" : "Freeze"}
                           </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedGroupParticipantId(
+                                item.groupParticipantId
+                              );
+                              setSelectedUserName(item.userName);
+                              setShowRemoveModal(true);
+                            }}
+                            size="sm"
+                            variant="ghost"
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          >
+                            Remove
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -267,6 +289,14 @@ const GroupPage = () => {
         <UnfreezeModal
           accountId={selectedAccountId || ""}
           onClose={() => setShowUnfreezeModal(false)}
+          groupId={groupId as string}
+        />
+      )}
+      {showRemoveModal && (
+        <RemoveParticipantModal
+          groupParticipantId={selectedGroupParticipantId || ""}
+          userName={selectedUserName || undefined}
+          onClose={() => setShowRemoveModal(false)}
           groupId={groupId as string}
         />
       )}

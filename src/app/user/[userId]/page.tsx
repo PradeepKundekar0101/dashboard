@@ -118,7 +118,7 @@ const UserPage = () => {
                 Trade Count: {account.tradeCount}
               </p>
               <p className={`text-lg font-semibold ${profitClass}`}>
-                Profit/Loss: {account.profitLoss?.toFixed(2)}%
+                Profit/Loss: {account.profitLoss?.toFixed(2)}
               </p>
             </div>
           </CardContent>
@@ -157,8 +157,8 @@ const UserPage = () => {
             </CardHeader>
             <CardContent>
               <p className={`text-2xl font-bold ${profitClass}`}>
-                {account.profitLoss >= 0 ? "+" : ""}
-                {account.profitLoss?.toFixed(2)}%
+                {account.pnlPercentage >= 0 ? "+" : ""}
+                {account.pnlPercentage?.toFixed(2)}%
               </p>
             </CardContent>
           </Card>
