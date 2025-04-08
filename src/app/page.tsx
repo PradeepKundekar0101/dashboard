@@ -73,21 +73,26 @@ export default function Home() {
   const fetchJoinRequests = async () => {
     try {
       const response = await api.get("/group/getParticipants/participants");
-      const joinRequests = response.data.map((participant: any) => {
-        return {
-          status: participant.status,
-          groupId: participant.groupId._id,
-          groupName: participant.groupId.name,
-          userId: participant.userId._id,
-          firstName: participant.userId.firstName,
-          lastName: participant.userId.lastName,
-          email: participant.userId.email,
-          phone: participant.userId.phoneNumber,
-          createdAt: participant.createdAt,
-          updatedAt: participant.updatedAt,
-          _id: participant._id,
-        };
-      });
+      const joinRequests = response.data
+        .map((participant: any) => {
+          if (participant && participant.groupId && participant.userId) {
+            return {
+              status: participant.status,
+              groupId: participant.groupId._id,
+              groupName: participant.groupId.name,
+              userId: participant.userId._id,
+              firstName: participant.userId.firstName,
+              lastName: participant.userId.lastName,
+              email: participant.userId.email,
+              phone: participant.userId.phoneNumber,
+              createdAt: participant.createdAt,
+              updatedAt: participant.updatedAt,
+              _id: participant._id,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean); // Filter out null values
       setJoinRequests(joinRequests);
     } catch (error) {
       console.error("Error fetching join requests:", error);
