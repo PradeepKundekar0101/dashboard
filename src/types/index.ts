@@ -13,12 +13,15 @@ export interface Position {
 
 export interface Deal {
   id: string;
-  symbol: string;
+  symbol?: string;
   type: string;
-  entryPrice: number;
-  closePrice: number;
-  volume: number;
+  entryPrice?: number;
+  closePrice?: number;
+  volume?: number;
   profit: number;
+  time: string;
+  positionId?: string;
+  orderId?: string;
 }
 
 export interface Order {
