@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { TableCell } from "../ui/table";
 import { TableBody } from "../ui/table";
@@ -13,6 +13,27 @@ import { Table, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
 import { Account } from "@/types";
 const Deals = ({ account }: { account: Account }) => {
+  // Filter out duplicate deals and reverse the order
+  const processedDeals = useMemo(() => {
+    if (!account.deals || account.deals.length === 0) return [];
+
+    // Use a Set to track unique deal signatures
+    const uniqueDeals = new Map();
+
+    account.deals.forEach((deal) => {
+      // Create a signature based on all relevant deal properties
+      const signature = `${deal.symbol}-${deal.type}-${deal.entryPrice}-${deal.closePrice}-${deal.volume}-${deal.profit}`;
+
+      // Only keep the first occurrence of each unique deal
+      if (!uniqueDeals.has(signature)) {
+        uniqueDeals.set(signature, deal);
+      }
+    });
+
+    // Convert back to array and reverse the order
+    return Array.from(uniqueDeals.values()).reverse();
+  }, [account.deals]);
+
   return (
     <Card>
       <CardHeader>
@@ -20,7 +41,7 @@ const Deals = ({ account }: { account: Account }) => {
         <CardDescription>History of completed trades</CardDescription>
       </CardHeader>
       <CardContent>
-        {account.deals && account.deals.length > 0 ? (
+        {processedDeals.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -33,7 +54,7 @@ const Deals = ({ account }: { account: Account }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {account.deals.map((deal) => {
+              {processedDeals.map((deal) => {
                 const profitClass =
                   deal.profit >= 0 ? "text-green-500" : "text-red-500";
                 return (

@@ -17,13 +17,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RefreshCcw, TrendingUp, Clock, Award, Users } from "lucide-react";
+import {
+  RefreshCcw,
+  TrendingUp,
+  Clock,
+  Award,
+  Users,
+  Search,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import FreezeModal from "@/components/group/freezeModal";
 import UnfreezeModal from "@/components/group/unfreezeModal";
 import RemoveParticipantModal from "@/components/group/removeParticipantModal";
+import { Input } from "@/components/ui/input";
 
 const GroupPage = () => {
   interface LeaderBoardData {
@@ -71,6 +79,8 @@ const GroupPage = () => {
   const [showFreezeModal, setShowFreezeModal] = useState<boolean>(false);
   const [showUnfreezeModal, setShowUnfreezeModal] = useState<boolean>(false);
   const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const fetchLeaderBoardData = async () => {
     try {
       if (!leaderboard) {
@@ -102,6 +112,18 @@ const GroupPage = () => {
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  // Filter leaderboard data based on search query
+  const filteredLeaderboard = leaderboard?.leaderboard?.filter((item) => {
+    if (!searchQuery.trim()) return true;
+
+    const query = searchQuery.toLowerCase();
+    return (
+      item.userName?.toLowerCase().includes(query) ||
+      item.accountId.toLowerCase().includes(query) ||
+      item.userId.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -143,19 +165,30 @@ const GroupPage = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-end gap-2 mb-4">
-                <Button variant="outline" size="sm">
-                  <Users className="h-4 w-4 mr-2" />
-                  Manage Accounts
-                </Button>
-                <Button variant="outline" size="sm">
-                  <TrendingUp className="h-4 w-4 mr-2" />
-                  Performance Analytics
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Award className="h-4 w-4 mr-2" />
-                  Winners Report
-                </Button>
+              <div className="flex justify-between gap-2 mb-4">
+                <div className="relative w-72">
+                  <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
+                  <Input
+                    placeholder="Search by name, account ID or user ID..."
+                    className="pl-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Users className="h-4 w-4 mr-2" />
+                    Manage Accounts
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Performance Analytics
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Award className="h-4 w-4 mr-2" />
+                    Winners Report
+                  </Button>
+                </div>
               </div>
 
               {loading ? (
@@ -167,6 +200,10 @@ const GroupPage = () => {
                 </div>
               ) : error ? (
                 <div className="p-4 text-center text-red-500">{error}</div>
+              ) : filteredLeaderboard?.length === 0 ? (
+                <div className="p-6 text-center text-muted-foreground">
+                  No users match your search criteria
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -182,7 +219,7 @@ const GroupPage = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {leaderboard.leaderboard.map((item) => (
+                    {filteredLeaderboard?.map((item) => (
                       <TableRow
                         onClick={() => {
                           router.push(`/user/${item.userId}`);
