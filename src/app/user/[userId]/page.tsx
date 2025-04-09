@@ -425,7 +425,7 @@ const UserPage = () => {
 
         {/* Tabs Section */}
         <Tabs defaultValue="positions" className="w-full">
-          <TabsList className="grid w-auto md:w-[800px] grid-cols-2 md:grid-cols-8">
+          <TabsList className="grid w-auto md:w-[800px] grid-cols-2 md:grid-cols-9">
             <TabsTrigger value="positions">Positions</TabsTrigger>
             <TabsTrigger value="deals">Deals</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
@@ -436,6 +436,7 @@ const UserPage = () => {
                 <TabsTrigger value="instruments">Instruments</TabsTrigger>
                 <TabsTrigger value="timing">Timing</TabsTrigger>
                 <TabsTrigger value="risk">Risk</TabsTrigger>
+                <TabsTrigger value="tradeHistory">Trade History</TabsTrigger>
               </>
             )}
           </TabsList>
@@ -574,6 +575,33 @@ const UserPage = () => {
                         />
                       </AreaChart>
                     </ResponsiveContainer>
+
+                    {/* Balance Growth Table */}
+                    <div className="mt-6 overflow-x-auto">
+                      <h3 className="text-lg font-medium mb-2">
+                        Balance History Data
+                      </h3>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Date</th>
+                            <th className="p-2 text-left">Balance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {balanceGrowthData.map(
+                            (entry: any, index: number) => (
+                              <tr key={index} className="border-b border-muted">
+                                <td className="p-2">{entry.date}</td>
+                                <td className="p-2">
+                                  ${entry.Balance?.toFixed(2) || "0.00"}
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -610,6 +638,53 @@ const UserPage = () => {
                           <Legend />
                         </PieChart>
                       </ResponsiveContainer>
+
+                      {/* Win/Loss Table */}
+                      <div className="mt-4 overflow-x-auto">
+                        <h3 className="text-lg font-medium mb-2">
+                          Win/Loss Data
+                        </h3>
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="bg-muted">
+                              <th className="p-2 text-left">Result</th>
+                              <th className="p-2 text-left">Count</th>
+                              <th className="p-2 text-left">Percentage</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {winLossData.map((result, index) => {
+                              const total = winLossData.reduce(
+                                (sum, item) => sum + item.value,
+                                0
+                              );
+                              const percentage = (result.value / total) * 100;
+                              return (
+                                <tr
+                                  key={index}
+                                  className="border-b border-muted"
+                                >
+                                  <td className="p-2">{result.name}</td>
+                                  <td className="p-2">{result.value}</td>
+                                  <td className="p-2">
+                                    {percentage.toFixed(1)}%
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="bg-muted">
+                              <td className="p-2 font-semibold">Total</td>
+                              <td className="p-2 font-semibold">
+                                {winLossData.reduce(
+                                  (sum, item) => sum + item.value,
+                                  0
+                                )}
+                              </td>
+                              <td className="p-2 font-semibold">100%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
@@ -753,6 +828,37 @@ const UserPage = () => {
                         <Bar dataKey="Profit" fill="#10b981" />
                       </BarChart>
                     </ResponsiveContainer>
+
+                    {/* Currency Profit Table */}
+                    <div className="mt-6 overflow-x-auto">
+                      <h3 className="text-lg font-medium mb-2">
+                        Currency Profit Data
+                      </h3>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Currency</th>
+                            <th className="p-2 text-left">Profit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currencyData.map((currency: any, index: number) => (
+                            <tr key={index} className="border-b border-muted">
+                              <td className="p-2">{currency.name}</td>
+                              <td
+                                className={`p-2 ${
+                                  currency.Profit >= 0
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                                }`}
+                              >
+                                ${currency.Profit.toFixed(2)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -888,6 +994,43 @@ const UserPage = () => {
                         <Bar dataKey="Trades" fill="#8b5cf6" />
                       </BarChart>
                     </ResponsiveContainer>
+
+                    {/* Hourly Trading Table */}
+                    <div className="mt-6 overflow-x-auto">
+                      <h3 className="text-lg font-medium mb-2">
+                        Hourly Trading Data
+                      </h3>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Hour</th>
+                            <th className="p-2 text-left">Trades</th>
+                            <th className="p-2 text-left">Profit</th>
+                            <th className="p-2 text-left">Win Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {hourlyData.map((hour: any, index: number) => (
+                            <tr key={index} className="border-b border-muted">
+                              <td className="p-2">{hour.hour}</td>
+                              <td className="p-2">{hour.Trades}</td>
+                              <td
+                                className={`p-2 ${
+                                  hour.Profit >= 0
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                                }`}
+                              >
+                                ${hour.Profit.toFixed(2)}
+                              </td>
+                              <td className="p-2">
+                                {hour["Win Rate"].toFixed(1)}%
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -929,6 +1072,31 @@ const UserPage = () => {
                         />
                       </LineChart>
                     </ResponsiveContainer>
+
+                    {/* Risk of Ruin Table */}
+                    <div className="mt-6 overflow-x-auto">
+                      <h3 className="text-lg font-medium mb-2">
+                        Risk of Ruin Data
+                      </h3>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Loss Size</th>
+                            <th className="p-2 text-left">Probability (%)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {riskOfRuinData.map((risk: any, index: number) => (
+                            <tr key={index} className="border-b border-muted">
+                              <td className="p-2">{risk["Loss Size"]}</td>
+                              <td className="p-2">
+                                {risk.Probability.toFixed(4)}%
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -979,9 +1147,125 @@ const UserPage = () => {
                         />
                       </BarChart>
                     </ResponsiveContainer>
+
+                    {/* Trade Duration Table */}
+                    <div className="mt-6 overflow-x-auto">
+                      <h3 className="text-lg font-medium mb-2">
+                        Trade Duration Data
+                      </h3>
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Duration</th>
+                            <th className="p-2 text-left">Trades</th>
+                            <th className="p-2 text-left">Win Rate (%)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {durationData.map((duration: any, index: number) => (
+                            <tr key={index} className="border-b border-muted">
+                              <td className="p-2">{duration.Duration}</td>
+                              <td className="p-2">
+                                {Math.round(duration.Trades)}
+                              </td>
+                              <td className="p-2">
+                                {duration["Win Rate"].toFixed(1)}%
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+          )}
+
+          {/* Trade History Tab */}
+          {forexStats && (
+            <TabsContent value="tradeHistory">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Trade History</CardTitle>
+                  <CardDescription>
+                    Historical record of all completed trades
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {forexStats.trades && forexStats.trades.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-2 text-left">Symbol</th>
+                            <th className="p-2 text-left">Type</th>
+                            <th className="p-2 text-left">Volume</th>
+                            <th className="p-2 text-left">Open Price</th>
+                            <th className="p-2 text-left">Close Price</th>
+                            <th className="p-2 text-left">Profit</th>
+                            <th className="p-2 text-left">Pips</th>
+                            <th className="p-2 text-left">Open Time</th>
+                            <th className="p-2 text-left">Close Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {forexStats.trades.map(
+                            (trade: any, index: number) => (
+                              <tr
+                                key={trade._id || index}
+                                className="border-b border-muted"
+                              >
+                                <td className="p-2">{trade?.symbol || ""}</td>
+                                <td className="p-2">
+                                  {trade?.type === "POSITION_TYPE_BUY" ||
+                                  trade?.type === "BUY"
+                                    ? "BUY"
+                                    : "SELL"}
+                                </td>
+                                <td className="p-2">{trade?.volume || 0}</td>
+                                <td className="p-2">{trade?.openPrice || 0}</td>
+                                <td className="p-2">
+                                  {trade?.closePrice || 0}
+                                </td>
+                                <td
+                                  className={`p-2 ${
+                                    trade?.profit &&
+                                    parseFloat(trade.profit) >= 0
+                                      ? "text-green-500"
+                                      : "text-red-500"
+                                  }`}
+                                >
+                                  {trade?.profit &&
+                                  parseFloat(trade.profit) >= 0
+                                    ? "+"
+                                    : ""}
+                                  {trade?.profit || "0.00"}
+                                </td>
+                                <td className="p-2">{trade?.pips || 0}</td>
+                                <td className="p-2">
+                                  {trade?.openTime
+                                    ? new Date(trade.openTime).toLocaleString()
+                                    : "N/A"}
+                                </td>
+                                <td className="p-2">
+                                  {trade?.closeTime
+                                    ? new Date(trade.closeTime).toLocaleString()
+                                    : "N/A"}
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-center text-muted-foreground">
+                      No trade history available
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
           )}
         </Tabs>
