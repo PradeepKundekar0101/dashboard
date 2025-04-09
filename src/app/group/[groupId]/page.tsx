@@ -222,7 +222,9 @@ const GroupPage = () => {
                     {filteredLeaderboard?.map((item) => (
                       <TableRow
                         onClick={() => {
-                          router.push(`/user/${item.userId}`);
+                          router.push(
+                            `/user/${item.userId}?accountId=${item.accountId}`
+                          );
                         }}
                         className="cursor-pointer"
                         key={item.accountId}
