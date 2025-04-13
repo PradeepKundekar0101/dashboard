@@ -104,10 +104,10 @@ const GroupPage = () => {
     fetchLeaderBoardData();
     const refreshInterval = setInterval(() => {
       fetchLeaderBoardData();
-    }, 3 * 1000);
+    }, 15 * 1000);
 
     return () => clearInterval(refreshInterval);
-  }, [groupId, fetchLeaderBoardData]);
+  }, [groupId]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

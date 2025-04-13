@@ -1,5 +1,5 @@
 "use client";
-
+import { jwtDecode } from "jwt-decode";
 import {
   createContext,
   useContext,
@@ -10,37 +10,53 @@ import {
 import { useRouter } from "next/navigation";
 import { config } from "@/config";
 import { api } from "@/hooks/useAxios";
+import { Mentor } from "@/types";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  mentor: Mentor | null;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [mentor, setMentor] = useState<Mentor | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const verifyAuth = () => {
-    const token = localStorage.getItem("authToken");
-
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-      router.push("/login");
-    }
-
-    setIsLoading(false);
-  };
   // Check authentication status on initial load
   useEffect(() => {
+    const verifyAuth = () => {
+      const token = localStorage.getItem("authToken");
+
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+          localStorage.removeItem("authToken");
+          setIsAuthenticated(false);
+          router.push("/login");
+        } else {
+          setIsAuthenticated(true);
+          const mentor = localStorage.getItem("mentor");
+          if (mentor) {
+            setMentor(JSON.parse(mentor));
+          }
+        }
+      } else {
+        setIsAuthenticated(false);
+        router.push("/login");
+      }
+
+      setIsLoading(false);
+    };
+
     verifyAuth();
-  }, [verifyAuth]);
+  }, [router]);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
@@ -53,8 +69,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.status !== 200) {
         throw new Error(response.data.message || "Login failed");
       }
-
-      localStorage.setItem("authToken", response.data.token); // Store token in localStorage
+      console.log(response.data);
+      localStorage.setItem("authToken", response.data.token);
+      if (response.data.mentor) {
+        setMentor(response.data.mentor);
+        localStorage.setItem("mentor", JSON.stringify(response.data.mentor));
+      }
       setIsAuthenticated(true);
       router.push("/");
     } catch (error) {
@@ -86,7 +106,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isLoading, login, logout, mentor }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -58,6 +58,7 @@ const Deals = ({ account }: { account: Account }) => {
 
     // Use Array.from to convert the map entries to an array we can iterate
     Array.from(dealsMap.entries()).forEach(([_key, deals]) => {
+      console.log(_key);
       if (!deals || deals.length === 0) return;
 
       // If multiple deals in a group, keep the one with highest profit

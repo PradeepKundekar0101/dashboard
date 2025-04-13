@@ -5,7 +5,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetFooter,
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +12,6 @@ import moment from "moment";
 import {
   X,
   Check,
-  User,
   Mail,
   Phone,
   Clock,
@@ -34,7 +32,7 @@ import { api } from "@/hooks/useAxios";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { JoinRequest } from "@/app/page";
+import { JoinRequest } from "@/types";
 
 const JoinRequestModal = ({
   isOpen,
@@ -186,7 +184,7 @@ const JoinRequestModal = ({
                   <UserPlus className="h-12 w-12 text-muted-foreground mx-auto mb-3 opacity-50" />
                   <h3 className="text-lg font-medium mb-1">No join requests</h3>
                   <p className="text-muted-foreground text-sm">
-                    You don't have any join requests at the moment
+                    You dont have any join requests at the moment
                   </p>
                 </div>
               ) : (
@@ -202,7 +200,7 @@ const JoinRequestModal = ({
                     No pending requests
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    You don't have any pending join requests
+                    You dont have any pending join requests
                   </p>
                 </div>
               ) : (
@@ -218,7 +216,7 @@ const JoinRequestModal = ({
                     No approved requests
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    You haven't approved any join requests yet
+                    You havent approved any join requests yet
                   </p>
                 </div>
               ) : (
@@ -234,7 +232,7 @@ const JoinRequestModal = ({
                     No rejected requests
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    You haven't rejected any join requests
+                    You havent rejected any join requests
                   </p>
                 </div>
               ) : (

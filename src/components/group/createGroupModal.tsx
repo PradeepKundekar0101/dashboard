@@ -24,8 +24,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
-import { api } from "@/hooks/useAxios";
-import { Group } from "@/app/page";
+import { Group } from "@/types";
 
 export const CreateGroupModal = ({
   isOpen,
