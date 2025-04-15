@@ -43,6 +43,7 @@ const FreezeHistory = ({ account }: { account: Account }) => {
         const response = await forexApi.get(
           `/riskmanagement/frozen/${account.groupId}/${account.accountId}`
         );
+        console.log(response);
         setFreezeHistory(response.data);
       } catch (error) {
         console.error("Error fetching freeze history:", error);
@@ -63,7 +64,7 @@ const FreezeHistory = ({ account }: { account: Account }) => {
       <CardContent>
         {loading ? (
           <p>Loading freeze history...</p>
-        ) : freezeHistory.length > 0 ? (
+        ) : freezeHistory && freezeHistory.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>

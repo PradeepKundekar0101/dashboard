@@ -19,25 +19,6 @@ import Deals from "@/components/account/deals";
 import Orders from "@/components/account/orders";
 import FreezeHistory from "@/components/account/freezeHistory";
 
-// Import Recharts components
-import {
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Cell,
-} from "recharts";
-
 const UserPage = () => {
   const { userId } = useParams();
   const searchParams = useSearchParams();
@@ -48,6 +29,8 @@ const UserPage = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState("positions");
+  const [isPollingPaused, setIsPollingPaused] = useState(false);
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -96,21 +79,29 @@ const UserPage = () => {
     fetchUserData();
     fetchForexStats();
 
-    // User data polling - every 2 seconds
-    const userDataPollingInterval = setInterval(() => {
-      fetchUserData();
-    }, 2000);
+    // Only set up polling if it's not paused
+    if (!isPollingPaused) {
+      // User data polling - every 2 seconds
+      const userDataPollingInterval = setInterval(() => {
+        fetchUserData();
+      }, 2000);
 
-    // Forex stats polling - every 5 seconds
-    const forexStatsPollingInterval = setInterval(() => {
-      fetchForexStats();
-    }, 5000);
+      // Forex stats polling - every 5 seconds
+      const forexStatsPollingInterval = setInterval(() => {
+        fetchForexStats();
+      }, 5000);
 
-    return () => {
-      clearInterval(userDataPollingInterval);
-      clearInterval(forexStatsPollingInterval);
-    };
-  }, [fetchUserData, fetchForexStats]);
+      return () => {
+        clearInterval(userDataPollingInterval);
+        clearInterval(forexStatsPollingInterval);
+      };
+    }
+  }, [fetchUserData, fetchForexStats, isPollingPaused]);
+
+  // Pause polling when viewing closed trades
+  useEffect(() => {
+    setIsPollingPaused(activeTab === "closedTrades");
+  }, [activeTab]);
 
   if (isLoading) {
     return (
@@ -277,7 +268,11 @@ const UserPage = () => {
         </div>
 
         {/* Tabs Section */}
-        <Tabs defaultValue="positions" className="w-full">
+        <Tabs
+          defaultValue="positions"
+          className="w-full"
+          onValueChange={(value) => setActiveTab(value)}
+        >
           <TabsList className="grid w-auto md:w-[800px] grid-cols-2 md:grid-cols-6">
             <TabsTrigger value="positions">Positions</TabsTrigger>
             <TabsTrigger value="deals">Deals</TabsTrigger>
@@ -389,7 +384,12 @@ const UserPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {closedTrades && closedTrades.length > 0 ? (
+                {isRefreshing ? (
+                  <div className="flex justify-center items-center py-8">
+                    <RefreshCw className="h-6 w-6 animate-spin" />
+                    <span className="ml-2">Loading trades...</span>
+                  </div>
+                ) : closedTrades && closedTrades.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
