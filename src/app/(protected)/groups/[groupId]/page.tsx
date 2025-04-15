@@ -65,7 +65,8 @@ const GroupPage = () => {
   }
   const { groupId } = useParams();
   const [leaderboard, setLeaderboard] = useState<LeaderBoardData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const router = useRouter();
@@ -81,10 +82,12 @@ const GroupPage = () => {
   const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const fetchLeaderBoardData = async () => {
+  const fetchLeaderBoardData = async (isInitialFetch: boolean = false) => {
     try {
-      if (!leaderboard) {
-        setLoading(true);
+      if (isInitialFetch) {
+        setIsInitialLoading(true);
+      } else {
+        setIsRefreshing(true);
       }
       const response = await forexApi.get(`leaderboard/${groupId}`);
       setLeaderboard(response.data);
@@ -94,16 +97,15 @@ const GroupPage = () => {
       setError("Failed to fetch leaderboard data");
       console.error(err);
     } finally {
-      if (!leaderboard) {
-        setLoading(false);
-      }
+      setIsInitialLoading(false);
+      setIsRefreshing(false);
     }
   };
 
   useEffect(() => {
-    fetchLeaderBoardData();
+    fetchLeaderBoardData(true);
     const refreshInterval = setInterval(() => {
-      fetchLeaderBoardData();
+      fetchLeaderBoardData(false);
     }, 15 * 1000);
 
     return () => clearInterval(refreshInterval);
@@ -137,7 +139,7 @@ const GroupPage = () => {
         <Button
           variant="outline"
           className="flex items-center gap-2"
-          onClick={fetchLeaderBoardData}
+          onClick={() => fetchLeaderBoardData(false)}
         >
           <RefreshCcw className="h-4 w-4" />
           Refresh
@@ -191,7 +193,7 @@ const GroupPage = () => {
                 </div>
               </div>
 
-              {loading ? (
+              {isInitialLoading ? (
                 <div className="space-y-2">
                   <Skeleton className="h-10 w-full" />
                   {[1, 2, 3].map((i) => (
