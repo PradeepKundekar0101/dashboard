@@ -56,13 +56,13 @@ const Users = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectionFilter, setConnectionFilter] =
     useState<ConnectionFilter>("all");
-
+  const [isDisconnecting, setIsDisconnecting] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
         const response = await api.get("/user/all");
-        setUsers(response.data?.data);
+        setUsers(Array.isArray(response.data?.data) ? response.data.data : []);
       } catch (error) {
         setError((error as Error).message);
       } finally {
@@ -72,34 +72,38 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter((user) => {
-    const searchTerm = searchQuery.toLowerCase();
-    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-    const email = user.email.toLowerCase();
-    const phone = user.phoneNumber.toString();
+  const filteredUsers = Array.isArray(users)
+    ? users.filter((user) => {
+        const searchTerm = searchQuery.toLowerCase();
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        const email = user.email?.toLowerCase();
+        const phone = user.phoneNumber?.toString();
 
-    const matchesSearch =
-      fullName.includes(searchTerm) ||
-      email.includes(searchTerm) ||
-      phone.includes(searchTerm);
+        const matchesSearch =
+          fullName.includes(searchTerm) ||
+          email.includes(searchTerm) ||
+          phone.includes(searchTerm);
 
-    const matchesConnectionFilter =
-      connectionFilter === "all" ||
-      (connectionFilter === "connected" && user.mt5Connection) ||
-      (connectionFilter === "not_connected" && !user.mt5Connection);
+        const matchesConnectionFilter =
+          connectionFilter === "all" ||
+          (connectionFilter === "connected" && user.mt5Connection) ||
+          (connectionFilter === "not_connected" && !user.mt5Connection);
 
-    return matchesSearch && matchesConnectionFilter;
-  });
+        return matchesSearch && matchesConnectionFilter;
+      })
+    : [];
 
   const handleDisconnectBroker = async (accountId: string | undefined) => {
     if (!accountId) return;
     try {
+      setIsDisconnecting(true);
       await forexApi.post(`account/disconnect`, { accountId });
-      const response = await api.get("/user/all");
-      setUsers(response.data);
       setIsDisconnectDialogOpen(false);
     } catch (error) {
       setError((error as Error).message);
+    } finally {
+      setIsDisconnecting(false);
+      window.location.reload();
     }
   };
 
@@ -223,8 +227,13 @@ const Users = () => {
                                     user.mt5Connection?.accountId
                                   )
                                 }
+                                disabled={isDisconnecting}
                               >
-                                Confirm Disconnect
+                                {isDisconnecting ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  "Confirm Disconnect"
+                                )}
                               </Button>
                               <Button
                                 variant="outline"
