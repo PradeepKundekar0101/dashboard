@@ -102,3 +102,34 @@ export type JoinRequest = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export interface LeaderBoardData {
+  timestamp: number;
+  leaderboard: Leaderboard[];
+}
+export interface FrozenAccount {
+  accountId: string;
+  frozenAt: Date;
+  initialEquity: number;
+  releaseTimeout: NodeJS.Timeout;
+  reason: string;
+  active: boolean;
+  releaseTime: Date;
+}
+export interface Leaderboard {
+  accountId: string;
+  name: string;
+  pnlPercentage: number;
+  totalFreezesCount: number;
+  totalTrades: number;
+  groupName: string;
+  groupId: string;
+  rank: number;
+  profitLoss: number;
+  balance: number;
+  equity: number;
+  userName: string;
+  userId: string;
+  freezeDetails: FrozenAccount;
+  groupParticipantId: string;
+}

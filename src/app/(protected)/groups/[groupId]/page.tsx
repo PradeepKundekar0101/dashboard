@@ -24,6 +24,7 @@ import {
   Award,
   Users,
   Search,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,37 +33,11 @@ import FreezeModal from "@/components/group/freezeModal";
 import UnfreezeModal from "@/components/group/unfreezeModal";
 import RemoveParticipantModal from "@/components/group/removeParticipantModal";
 import { Input } from "@/components/ui/input";
+import FreezeDetails from "@/components/group/freezeDetails";
+import { Leaderboard } from "@/types";
+import { LeaderBoardData } from "@/types";
 
 const GroupPage = () => {
-  interface LeaderBoardData {
-    timestamp: number;
-    leaderboard: Leaderboard[];
-  }
-  interface FrozenAccount {
-    accountId: string;
-    frozenAt: Date;
-    initialEquity: number;
-    releaseTimeout: NodeJS.Timeout;
-    reason: string;
-    active: boolean;
-  }
-  interface Leaderboard {
-    accountId: string;
-    name: string;
-    pnlPercentage: number;
-    totalFreezesCount: number;
-    totalTrades: number;
-    groupName: string;
-    groupId: string;
-    rank: number;
-    profitLoss: number;
-    balance: number;
-    equity: number;
-    userName: string;
-    userId: string;
-    freezeDetails: FrozenAccount;
-    groupParticipantId: string;
-  }
   const { groupId } = useParams();
   const [leaderboard, setLeaderboard] = useState<LeaderBoardData | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
@@ -80,6 +55,10 @@ const GroupPage = () => {
   const [showFreezeModal, setShowFreezeModal] = useState<boolean>(false);
   const [showUnfreezeModal, setShowUnfreezeModal] = useState<boolean>(false);
   const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
+  const [showFreezeDetails, setShowFreezeDetails] = useState<boolean>(false);
+  const [selectedAccount, setSelectedAccount] = useState<Leaderboard | null>(
+    null
+  );
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetchLeaderBoardData = async (isInitialFetch: boolean = false) => {
@@ -310,6 +289,17 @@ const GroupPage = () => {
                           >
                             Remove
                           </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAccount(item);
+                              setShowFreezeDetails(true);
+                            }}
+                            size="sm"
+                            variant="ghost"
+                          >
+                            ❄️
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -339,6 +329,12 @@ const GroupPage = () => {
           userName={selectedUserName || undefined}
           onClose={() => setShowRemoveModal(false)}
           groupId={groupId as string}
+        />
+      )}
+      {showFreezeDetails && (
+        <FreezeDetails
+          account={selectedAccount as Leaderboard}
+          onClose={() => setShowFreezeDetails(false)}
         />
       )}
     </div>
