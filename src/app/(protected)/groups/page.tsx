@@ -13,7 +13,15 @@ import {
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-import { PlusCircle, Users, ArrowRight, Calendar } from "lucide-react";
+import {
+  PlusCircle,
+  Users,
+  ArrowRight,
+  Calendar,
+  Edit,
+  Edit2,
+  Trash,
+} from "lucide-react";
 import { api } from "@/hooks/useAxios";
 import { jwtDecode } from "jwt-decode";
 import {
@@ -25,11 +33,16 @@ import {
 } from "@/components/ui/select";
 import { Group, Mentor } from "@/types";
 import { useAuth } from "@/contexts/AuthContext";
+import EditGroupModal from "@/components/group/editGroupModal";
+import DeleteGroupModal from "@/components/group/deleteGroupModal";
 
 const Groups = () => {
   const router = useRouter();
   const [groups, setGroups] = useState<Group[]>([]);
+  const [group, setGroup] = useState<Group | null>(null);
   const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false);
+  const [isEditGroupModalOpen, setIsEditGroupModalOpen] = useState(false);
+  const [isDeleteGroupModalOpen, setIsDeleteGroupModalOpen] = useState(false);
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const { mentor } = useAuth();
   const createGroup = async (group: Group) => {
@@ -117,7 +130,31 @@ const Groups = () => {
               onClick={() => router.push(`/groups/${group._id}`)}
             >
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl">{group.name}</CardTitle>
+                <CardTitle className="text-xl">
+                  {group.name}{" "}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsEditGroupModalOpen(true);
+                      setGroup(group);
+                    }}
+                  >
+                    <Edit2 />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDeleteGroupModalOpen(true);
+                      setGroup(group);
+                    }}
+                  >
+                    <Trash />
+                  </Button>
+                </CardTitle>
                 <CardDescription className="line-clamp-2">
                   {group.description}
                 </CardDescription>
@@ -192,13 +229,32 @@ const Groups = () => {
         groups={groups}
       />
 
-      <CreateGroupModal
-        isOpen={isCreateGroupModalOpen}
-        setIsOpen={setIsCreateGroupModalOpen}
-        createGroup={createGroup}
-        setGroups={setGroups}
-        groups={groups}
-      />
+      {group && (
+        <EditGroupModal
+          id={group._id || ""}
+          isOpen={isEditGroupModalOpen}
+          onClose={() => {
+            setIsEditGroupModalOpen(false);
+            setGroup(null);
+          }}
+          name={group.name}
+          description={group.description}
+          setGroups={setGroups}
+        />
+      )}
+
+      {group && (
+        <DeleteGroupModal
+          groupId={group._id || ""}
+          groupName={group.name}
+          isOpen={isDeleteGroupModalOpen}
+          onClose={() => {
+            setIsDeleteGroupModalOpen(false);
+            setGroup(null);
+          }}
+          setGroups={setGroups}
+        />
+      )}
     </div>
   );
 };

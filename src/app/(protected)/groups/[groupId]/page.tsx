@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input";
 import FreezeDetails from "@/components/group/freezeDetails";
 import { Leaderboard } from "@/types";
 import { LeaderBoardData } from "@/types";
+import EditParticipantsSettings from "@/components/group/editParticipantsSettings";
 
 const GroupPage = () => {
   const { groupId } = useParams();
@@ -52,6 +53,7 @@ const GroupPage = () => {
     string | null
   >(null);
   const [selectedUserName, setSelectedUserName] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [showFreezeModal, setShowFreezeModal] = useState<boolean>(false);
   const [showUnfreezeModal, setShowUnfreezeModal] = useState<boolean>(false);
   const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
@@ -60,7 +62,8 @@ const GroupPage = () => {
     null
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
-
+  const [showEditParticipantsSettings, setShowEditParticipantsSettings] =
+    useState<boolean>(false);
   const fetchLeaderBoardData = async (isInitialFetch: boolean = false) => {
     try {
       if (isInitialFetch) {
@@ -281,6 +284,7 @@ const GroupPage = () => {
                                 item.groupParticipantId
                               );
                               setSelectedUserName(item.userName);
+
                               setShowRemoveModal(true);
                             }}
                             size="sm"
@@ -299,6 +303,20 @@ const GroupPage = () => {
                             variant="ghost"
                           >
                             ❄️
+                          </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedUserId(item.userId);
+                              setSelectedGroupParticipantId(
+                                item.groupParticipantId
+                              );
+                              setShowEditParticipantsSettings(true);
+                            }}
+                            size="sm"
+                            variant="ghost"
+                          >
+                            🔧
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -335,6 +353,15 @@ const GroupPage = () => {
         <FreezeDetails
           account={selectedAccount as Leaderboard}
           onClose={() => setShowFreezeDetails(false)}
+        />
+      )}
+      {showEditParticipantsSettings && (
+        <EditParticipantsSettings
+          show={showEditParticipantsSettings}
+          onClose={() => setShowEditParticipantsSettings(false)}
+          groupParticipantId={selectedGroupParticipantId || ""}
+          groupId={groupId as string}
+          userId={selectedUserId || ""}
         />
       )}
     </div>

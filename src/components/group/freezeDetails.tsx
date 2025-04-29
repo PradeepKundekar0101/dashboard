@@ -24,16 +24,26 @@ const FreezeDetails = ({
             <div>
               <p>Freeze Details</p>
               <p>Account ID: {account.accountId}</p>
-              <p>Freeze Reason: {account.freezeDetails.reason}</p>
-              <p>
-                Freeze Date: {account.freezeDetails.frozenAt.toLocaleString()}
-              </p>
-              <p>
-                Freeze Duration:{" "}
-                {moment(account.freezeDetails.releaseTime).format(
-                  "DD/MM/YYYY HH:mm:ss"
-                )}
-              </p>
+              {account.freezeDetails.active ? (
+                <>
+                  <p>Freeze Reason: {account.freezeDetails.reason}</p>
+                  <p>
+                    Freeze Date:{" "}
+                    {account.freezeDetails?.frozenAt?.toLocaleString() ||
+                      "Client has not frozen the account"}
+                  </p>
+                  <p>
+                    Freeze Duration:{" "}
+                    {moment(account.freezeDetails?.releaseTime).format(
+                      "DD/MM/YYYY HH:mm:ss"
+                    )}
+                  </p>
+                </>
+              ) : (
+                <h1 className="text-xl font-bold">
+                  Client's account is not frozen
+                </h1>
+              )}
             </div>
           )}
         </DialogDescription>
