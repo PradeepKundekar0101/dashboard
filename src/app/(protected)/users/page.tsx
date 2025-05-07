@@ -135,7 +135,7 @@ const Users = () => {
           />
         </div>
 
-        <Select
+        {/* <Select
           value={connectionFilter}
           onValueChange={(value: ConnectionFilter) =>
             setConnectionFilter(value)
@@ -149,7 +149,7 @@ const Users = () => {
             <SelectItem value="connected">Connected</SelectItem>
             <SelectItem value="not_connected">Not Connected</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
       </div>
 
       <Table>
@@ -160,7 +160,7 @@ const Users = () => {
             <TableHead>Email</TableHead>
             <TableHead>Occupation</TableHead>
             <TableHead>Joined At</TableHead>
-            <TableHead>MT5 Status</TableHead>
+            {/* <TableHead>MT5 Status</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -173,7 +173,7 @@ const Users = () => {
               <TableCell>
                 {format(new Date(user.createdAt), "dd/MM/yyyy HH:mm")}
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 {user.mt5Connection ? (
                   <Dialog>
                     <DialogTrigger asChild>
@@ -252,7 +252,7 @@ const Users = () => {
                     Not Connected
                   </Button>
                 )}
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>

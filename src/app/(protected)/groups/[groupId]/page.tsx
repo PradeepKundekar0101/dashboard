@@ -277,7 +277,7 @@ const GroupPage = () => {
                           >
                             {item.freezeDetails.active ? "Unfreeze" : "Freeze"}
                           </Button>
-                          <Button
+                          {/* <Button
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedGroupParticipantId(
@@ -292,7 +292,7 @@ const GroupPage = () => {
                             className="text-red-500 hover:text-red-700 hover:bg-red-50"
                           >
                             Remove
-                          </Button>
+                          </Button> */}
                           <Button
                             onClick={(e) => {
                               e.stopPropagation();
