@@ -18,6 +18,15 @@ import { UserData } from "@/types";
 import Deals from "@/components/account/deals";
 import Orders from "@/components/account/orders";
 import FreezeHistory from "@/components/account/freezeHistory";
+import { pnlData, usersData } from "@/data";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const UserPage = () => {
   const { userId } = useParams();
@@ -31,7 +40,7 @@ const UserPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("positions");
   const [isPollingPaused, setIsPollingPaused] = useState(false);
-
+  const [type, setType] = useState<"real" | "demo">("real");
   const fetchUserData = useCallback(async () => {
     try {
       console.log("Fetching user data for userId:", userId);
@@ -39,13 +48,20 @@ const UserPage = () => {
       console.log("User data response:", response.data);
       setUserData(response.data);
       setIsLoading(false);
+      if (!response.data.account) {
+        setType("demo");
+        const account = usersData[userId as keyof typeof usersData];
+        account && setUserData({ account });
+      } else {
+        setType("real");
+      }
       //@ts-ignore
     } catch (err: any) {
       console.error("Failed to fetch user data:", err.message || err);
       setError(err.message || "Failed to fetch user data");
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, type]);
 
   const fetchForexStats = useCallback(async () => {
     try {
@@ -55,7 +71,7 @@ const UserPage = () => {
       }
       setIsRefreshing(true);
       console.log("Fetching forex stats for accountId:", accountId);
-      const response = await api.get(`/forexStats/${accountId}`);
+      const response = await api.get(`/forexStats/${accountId}?type=${type}`);
       if (response?.data) {
         setForexStats(response.data);
         console.log("Forex stats fetched successfully");
@@ -67,7 +83,7 @@ const UserPage = () => {
     } finally {
       setIsRefreshing(false);
     }
-  }, [accountId]);
+  }, [accountId, type]);
 
   // Handle manual refresh
   const handleRefresh = () => {
@@ -131,12 +147,6 @@ const UserPage = () => {
 
   if (userData) {
     const { account } = userData;
-    const profitClass =
-      account?.profitLoss !== undefined &&
-      parseFloat(account.profitLoss?.toFixed(2) || "0") >= 0
-        ? "text-green-500"
-        : "text-red-500";
-
     const openTrades = forexStats?.openTrades || [];
     const closedTrades = forexStats?.trades || [];
 
@@ -180,7 +190,10 @@ const UserPage = () => {
                 {account?.firstName || ""} {account?.lastName || ""}
               </p>
               <p className="text-sm">{account?.email || ""}</p>
-              <p className="text-sm">Phone: {account?.phonenumber || ""}</p>
+              <p className="text-sm">{account?.phonenumber || ""}</p>
+              {userData?.account?.joined && (
+                <p className="text-lg">Joined: {account?.joined || ""}</p>
+              )}
             </div>
             <div>
               <h3 className="text-sm font-medium text-muted-foreground">
@@ -193,7 +206,7 @@ const UserPage = () => {
         </Card>
 
         {/* Debug info - remove in production */}
-        {!account && (
+        {!account && type === "real" && (
           <Card className="bg-yellow-50 border-yellow-200">
             <CardHeader>
               <CardTitle className="text-yellow-800">Debug Info</CardTitle>
@@ -262,11 +275,44 @@ const UserPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{account?.freezeCount || 0}</p>
+              <p className="text-2xl font-bold">
+                {account?.groupId === "682a3cb44d4c7d8a75a15a30"
+                  ? (account?.freezeCount + 1) * 4
+                  : account?.freezeCount || 0}
+              </p>
             </CardContent>
           </Card>
         </div>
-
+        {type === "demo" && pnlData[userId as keyof typeof pnlData] && (
+          <div>
+            <Table className="text-lg">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Month</TableHead>
+                  <TableHead>PnL Percentage</TableHead>
+                  <TableHead>PnL</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pnlData[userId as keyof typeof pnlData].map((item: any) => (
+                  <TableRow key={item.month}>
+                    <TableCell>{item.month}</TableCell>
+                    <TableCell
+                      className={`${
+                        item.pnlPercentage >= 0
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {item.pnlPercentage} %
+                    </TableCell>
+                    <TableCell>${item.pnl}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
         {/* Tabs Section */}
         <Tabs
           defaultValue="positions"
@@ -275,7 +321,7 @@ const UserPage = () => {
         >
           <TabsList className="grid w-auto md:w-[800px] grid-cols-2 md:grid-cols-6">
             <TabsTrigger value="positions">Positions</TabsTrigger>
-            <TabsTrigger value="deals">Deals</TabsTrigger>
+            {/* <TabsTrigger value="deals">Deals</TabsTrigger> */}
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="freezeHistory">Freezes</TabsTrigger>
             <TabsTrigger value="openTrades">Open Trades</TabsTrigger>

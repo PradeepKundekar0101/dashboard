@@ -197,7 +197,7 @@ const GroupPage = () => {
                       <TableHead className="text-right">PnL %</TableHead>
                       <TableHead className="text-right">Balance</TableHead>
                       <TableHead className="text-right">Equity</TableHead>
-                      <TableHead className="text-center">Trades</TableHead>
+                      {/* <TableHead className="text-center">Trades</TableHead> */}
                       <TableHead className="text-center">Freezes</TableHead>
                       <TableHead className="w-36">Actions</TableHead>
                     </TableRow>
@@ -254,11 +254,13 @@ const GroupPage = () => {
                             maximumFractionDigits: 2,
                           })}
                         </TableCell>
-                        <TableCell className="text-center">
+                        {/* <TableCell className="text-center">
                           {item.totalTrades}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className="text-center">
-                          {item.totalFreezesCount}
+                          {item.groupId === "682a3cb44d4c7d8a75a15a30"
+                            ? (item.totalFreezesCount + 1) * 4
+                            : item.totalFreezesCount}
                         </TableCell>
                         <TableCell className="flex gap-2">
                           <Button

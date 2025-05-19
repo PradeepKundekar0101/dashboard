@@ -50,7 +50,8 @@ export interface Account {
   firstName: string;
   lastName: string;
   email: string;
-  phonenumber: number;
+  phonenumber: string;
+  joined?: string;
 }
 
 export interface UserData {
