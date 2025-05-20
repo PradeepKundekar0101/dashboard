@@ -104,9 +104,9 @@ export const usersData = {
     phonenumber: "",
     joined: "07/12/2024",
   },
-  //Avinash
+  //Ganesh
   "67f304ec0f2376b8bbbea357": {
-    firstName: "avinash",
+    firstName: "Ganesh",
     lastName: "",
     accountId: "f8e32501-dca7-4925-a6da-40024b5e4234",
     name: "235432109@Exness-MT5Real7",
@@ -230,9 +230,9 @@ export const usersData = {
     phonenumber: "",
     joined: "07/03/2025",
   },
-  //Faizan
+  //Bindhu
   "67f304ec0f2376b8bbbea363": {
-    firstName: "Faizan",
+    firstName: "Bindhu",
     lastName: "",
     accountId: "17a5e274-c4ef-4abb-8366-a883f7323349",
     name: "235789012@Exness-MT5Real3",
