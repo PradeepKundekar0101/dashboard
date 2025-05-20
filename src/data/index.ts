@@ -274,318 +274,318 @@ export const usersData = {
   },
 };
 export const pnlData = {
-  //Omkar - joined 15/10/2024
+  //Omkar - joined 15/10/2024 - 50% of 18000
   "67f304ec0f2376b8bbbea352": [
     {
       month: "October 2024",
-      pnlPercentage: 4.2,
-      pnl: 705.09,
+      pnlPercentage: 7.2,
+      pnl: 1296,
     },
     {
       month: "November 2024",
-      pnlPercentage: 3.8,
-      pnl: 637.03,
+      pnlPercentage: 7.5,
+      pnl: 1350,
     },
     {
       month: "December 2024",
-      pnlPercentage: 5.1,
-      pnl: 854.96,
+      pnlPercentage: 7.8,
+      pnl: 1404,
     },
     {
       month: "January 2025",
-      pnlPercentage: 4.7,
-      pnl: 787.91,
+      pnlPercentage: 7.2,
+      pnl: 1296,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.9,
-      pnl: 653.8,
+      pnlPercentage: 7.0,
+      pnl: 1260,
     },
     {
       month: "March 2025",
-      pnlPercentage: 4.3,
-      pnl: 720.85,
+      pnlPercentage: 6.8,
+      pnl: 1224,
     },
     {
       month: "April 2025",
-      pnlPercentage: 4.0,
-      pnl: 670.56,
+      pnlPercentage: 6.5,
+      pnl: 1170,
     },
   ],
-  //Sameer - joined 28/10/2024
+  //Sameer - joined 28/10/2024 - 45% of 16820
   "67f304ec0f2376b8bbbea353": [
     {
       month: "October 2024",
-      pnlPercentage: 2.1,
-      pnl: 325.5,
+      pnlPercentage: 5.5,
+      pnl: 925.1,
     },
     {
       month: "November 2024",
-      pnlPercentage: 4.3,
-      pnl: 666.5,
+      pnlPercentage: 7.2,
+      pnl: 1211.04,
     },
     {
       month: "December 2024",
-      pnlPercentage: 3.8,
-      pnl: 589.0,
+      pnlPercentage: 7.0,
+      pnl: 1177.4,
     },
     {
       month: "January 2025",
-      pnlPercentage: 4.7,
-      pnl: 728.5,
+      pnlPercentage: 6.8,
+      pnl: 1143.76,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.2,
-      pnl: 496.0,
+      pnlPercentage: 6.5,
+      pnl: 1093.3,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.5,
-      pnl: 542.5,
+      pnlPercentage: 6.2,
+      pnl: 1042.84,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.4,
-      pnl: 527.0,
+      pnlPercentage: 5.8,
+      pnl: 975.56,
     },
   ],
-  //Rahul - joined 05/11/2024
+  //Rahul - joined 05/11/2024 - 42% of 15910
   "67f304ec0f2376b8bbbea354": [
     {
       month: "November 2024",
-      pnlPercentage: 3.8,
-      pnl: 562.4,
+      pnlPercentage: 7.5,
+      pnl: 1193.25,
     },
     {
       month: "December 2024",
-      pnlPercentage: 4.2,
-      pnl: 621.6,
+      pnlPercentage: 7.2,
+      pnl: 1145.52,
     },
     {
       month: "January 2025",
-      pnlPercentage: 3.5,
-      pnl: 518.0,
+      pnlPercentage: 7.0,
+      pnl: 1113.7,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.7,
-      pnl: 547.6,
+      pnlPercentage: 6.8,
+      pnl: 1081.88,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.2,
-      pnl: 473.6,
+      pnlPercentage: 6.8,
+      pnl: 1081.88,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.6,
-      pnl: 532.8,
+      pnlPercentage: 6.7,
+      pnl: 1065.97,
     },
   ],
-  //Sohail - joined 19/11/2024
+  //Sohail - joined 19/11/2024 - 40% of 15120
   "67f304ec0f2376b8bbbea355": [
     {
       month: "November 2024",
-      pnlPercentage: 3.2,
-      pnl: 454.4,
+      pnlPercentage: 6.8,
+      pnl: 1028.16,
     },
     {
       month: "December 2024",
-      pnlPercentage: 3.5,
-      pnl: 497.0,
+      pnlPercentage: 7.0,
+      pnl: 1058.4,
     },
     {
       month: "January 2025",
-      pnlPercentage: 4.1,
-      pnl: 582.2,
+      pnlPercentage: 6.8,
+      pnl: 1028.16,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.3,
-      pnl: 468.6,
+      pnlPercentage: 6.5,
+      pnl: 982.8,
     },
     {
       month: "March 2025",
-      pnlPercentage: 2.9,
-      pnl: 411.8,
+      pnlPercentage: 6.5,
+      pnl: 982.8,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.0,
-      pnl: 426.0,
+      pnlPercentage: 6.4,
+      pnl: 967.68,
     },
   ],
-  //Darshan - joined 07/12/2024
+  //Darshan - joined 07/12/2024 - 38% of 14490
   "67f304ec0f2376b8bbbea356": [
     {
       month: "December 2024",
-      pnlPercentage: 3.8,
-      pnl: 524.4,
+      pnlPercentage: 8.0,
+      pnl: 1159.2,
     },
     {
       month: "January 2025",
-      pnlPercentage: 3.5,
-      pnl: 483.0,
+      pnlPercentage: 7.8,
+      pnl: 1130.22,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.9,
-      pnl: 538.2,
+      pnlPercentage: 7.5,
+      pnl: 1086.75,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.3,
-      pnl: 455.4,
+      pnlPercentage: 7.4,
+      pnl: 1072.26,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.5,
-      pnl: 483.0,
+      pnlPercentage: 7.3,
+      pnl: 1057.77,
     },
   ],
-  //Avinash - joined 22/12/2024
+  //Avinash - joined 22/12/2024 - 36% of 14280
   "67f304ec0f2376b8bbbea357": [
     {
       month: "December 2024",
-      pnlPercentage: 3.2,
-      pnl: 432.0,
+      pnlPercentage: 7.5,
+      pnl: 1071,
     },
     {
       month: "January 2025",
-      pnlPercentage: 3.5,
-      pnl: 472.5,
+      pnlPercentage: 7.4,
+      pnl: 1056.72,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.1,
-      pnl: 418.5,
+      pnlPercentage: 7.2,
+      pnl: 1028.16,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.3,
-      pnl: 445.5,
+      pnlPercentage: 7.0,
+      pnl: 999.6,
     },
     {
       month: "April 2025",
-      pnlPercentage: 2.9,
-      pnl: 391.5,
+      pnlPercentage: 6.9,
+      pnl: 985.32,
     },
   ],
-  //Vaishnav - joined 10/01/2025
+  //Vaishnav - joined 10/01/2025 - 35% of 14040
   "67f304ec0f2376b8bbbea358": [
     {
       month: "January 2025",
-      pnlPercentage: 3.7,
-      pnl: 488.4,
+      pnlPercentage: 9.0,
+      pnl: 1263.6,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.9,
-      pnl: 514.8,
+      pnlPercentage: 8.8,
+      pnl: 1235.52,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.8,
-      pnl: 501.6,
+      pnlPercentage: 8.7,
+      pnl: 1221.48,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.6,
-      pnl: 475.2,
+      pnlPercentage: 8.5,
+      pnl: 1193.4,
     },
   ],
-  //Sohan - joined 25/01/2025
+  //Sohan - joined 25/01/2025 - 34% of 13908
   "67f304ec0f2376b8bbbea359": [
     {
       month: "January 2025",
-      pnlPercentage: 3.2,
-      pnl: 412.8,
+      pnlPercentage: 8.6,
+      pnl: 1196.09,
     },
     {
       month: "February 2025",
-      pnlPercentage: 3.6,
-      pnl: 464.4,
+      pnlPercentage: 8.5,
+      pnl: 1182.18,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.8,
-      pnl: 490.2,
+      pnlPercentage: 8.5,
+      pnl: 1182.18,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.4,
-      pnl: 438.6,
+      pnlPercentage: 8.4,
+      pnl: 1168.27,
     },
   ],
-  //Avinash - joined 08/02/2025
+  //Avinash - joined 08/02/2025 - 32% of 13596
   "67f304ec0f2376b8bbbea360": [
     {
       month: "February 2025",
-      pnlPercentage: 3.8,
-      pnl: 478.8,
+      pnlPercentage: 11.0,
+      pnl: 1495.56,
     },
     {
       month: "March 2025",
-      pnlPercentage: 4.2,
-      pnl: 529.2,
+      pnlPercentage: 10.8,
+      pnl: 1468.37,
     },
     {
       month: "April 2025",
-      pnlPercentage: 4.0,
-      pnl: 504.0,
+      pnlPercentage: 10.2,
+      pnl: 1386.79,
     },
   ],
-  //Sidharth - joined 20/02/2025
+  //Sidharth - joined 20/02/2025 - 30% of 13260
   "67f304ec0f2376b8bbbea361": [
     {
       month: "February 2025",
-      pnlPercentage: 3.1,
-      pnl: 381.3,
+      pnlPercentage: 10.2,
+      pnl: 1352.52,
     },
     {
       month: "March 2025",
-      pnlPercentage: 3.5,
-      pnl: 430.5,
+      pnlPercentage: 10.0,
+      pnl: 1326,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.4,
-      pnl: 418.2,
+      pnlPercentage: 9.8,
+      pnl: 1299.48,
     },
   ],
-  //Dhruv - joined 07/03/2025
+  //Dhruv - joined 07/03/2025 - 28% of 12800
   "67f304ec0f2376b8bbbea362": [
     {
       month: "March 2025",
-      pnlPercentage: 4.3,
-      pnl: 516.0,
+      pnlPercentage: 14.5,
+      pnl: 1856,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.7,
-      pnl: 444.0,
+      pnlPercentage: 13.5,
+      pnl: 1728,
     },
   ],
-  //Faizan - joined 22/03/2025
+  //Faizan - joined 22/03/2025 - 27% of 12700
   "67f304ec0f2376b8bbbea363": [
     {
       month: "March 2025",
-      pnlPercentage: 3.2,
-      pnl: 374.4,
+      pnlPercentage: 13.8,
+      pnl: 1752.6,
     },
     {
       month: "April 2025",
-      pnlPercentage: 3.8,
-      pnl: 444.6,
+      pnlPercentage: 13.2,
+      pnl: 1676.4,
     },
   ],
-  //Brian - joined 05/04/2025
+  //Brian - joined 05/04/2025 - 25% of 12500
   "67f304ec0f2376b8bbbea364": [
     {
       month: "April 2025",
-      pnlPercentage: 5.0,
-      pnl: 570.0,
+      pnlPercentage: 25.0,
+      pnl: 3125,
     },
   ],
 };
